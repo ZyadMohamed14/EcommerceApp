@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "896087317228",
+    "firebase_url": "https://onsale-7f4cb-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "onsale-7f4cb",
+    "storage_bucket": "onsale-7f4cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:896087317228:android:1b468352a810024959e3c9",
+        "android_client_info": {
+          "package_name": "com.example.ecommerceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9-fx7wAgpRJL3q4witxzlDSN2zJKF-nI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "896087317228-cettgh6nplpo8cmlmqq1hv09a56h09jg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
