@@ -6,7 +6,7 @@ plugins {
     id("kotlin-kapt") // Apply the Kotlin Kapt plugin
     id("kotlin-parcelize")
     id("com.google.protobuf") version "0.9.4" apply true
-
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -86,12 +86,27 @@ android {
         buildConfig = true
     }
 }
-
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
 dependencies {
 
 
-    // observe Network Connection
+    // third party libraries
     implementation("com.github.pwittchen:reactivenetwork-rx2:3.0.8")
+    implementation("com.squareup.retrofit2:retrofit:2.11.0'")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.14")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+
+    implementation("com.google.dagger:hilt-android:2.48")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.2.0")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    kapt("com.google.dagger:hilt-android-compiler:2.48")
+    kapt("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+
     // splash screen
     implementation("androidx.core:core-splashscreen:1.0.1")
     //Android Sdk
@@ -114,6 +129,7 @@ dependencies {
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
     implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
 
     val lifecycle_version = "2.7.0"
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")

@@ -1,38 +1,33 @@
 package com.example.ecommerceapp.ui.auth.usermodel
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.CreationExtras
-import com.example.ecommerceapp.data.datasource.local.AppPreferencesDataSource
 import com.example.ecommerceapp.data.model.Resource
+import com.example.ecommerceapp.data.model.user.UserDetailsModel
 import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
-import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
-import com.example.ecommerceapp.data.reposotiry.common.AppDataStoreRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepository
-import com.example.ecommerceapp.data.reposotiry.user.UserFirestoreRepositoryImpl
-import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepositoryImpl
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
 import com.example.ecommerceapp.domain.toUserDetailsModel
 import com.example.ecommerceapp.domain.toUserDetailsPreferences
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.CrashlyticsUtils.LISTEN_TO_USER_DETAILS
 import com.example.ecommerceapp.utils.UserDetailsException
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlinx.coroutines.flow.mapLatest as mapLatest
 
-
-class UserViewModel(
+@HiltViewModel
+class UserViewModel @Inject constructor(
     private val appPreferencesRepository: AppPreferenceRepository,
     private val userPreferenceRepository: UserPreferenceRepository,
     private val userFirestoreRepository: UserFirestoreRepository,
@@ -56,9 +51,7 @@ class UserViewModel(
     @OptIn(ExperimentalCoroutinesApi::class)
     fun getUserDetails() =
         userPreferenceRepository.getUserDetails().mapLatest { it.toUserDetailsModel() }
-fun get(){
 
-}
     private fun listenToUserDetails() = viewModelScope.launch {
         val userId = userPreferenceRepository.getUserId().first()
         if (userId.isEmpty()) return@launch
@@ -96,7 +89,7 @@ fun get(){
     }
 
     companion object {
-        private const val TAG = "UserViewModel"
+        private const val TAG = "benz"
     }
 
     override fun onCleared() {
@@ -105,25 +98,6 @@ fun get(){
     }
 }
 
-class UserViewModelFactory(
-    private val context: Context,
-) : ViewModelProvider.Factory {
-    private val appPreferencesRepository =
-        AppDataStoreRepositoryImpl(AppPreferencesDataSource(context))
-    private val userPreferencesRepository = UserPreferenceRepositoryImpl(context)
-    private val userFirestoreRepository = UserFirestoreRepositoryImpl()
-    private val firebaseAuthRepository = FirebaseAuthRepositoryImpl()
 
-    override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        if (modelClass.isAssignableFrom(UserViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST") return UserViewModel(
-                appPreferencesRepository,
-                userPreferencesRepository,
-                userFirestoreRepository,
-                firebaseAuthRepository
-            ) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
-}
+
 

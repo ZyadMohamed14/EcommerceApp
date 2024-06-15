@@ -2,10 +2,10 @@ package com.example.ecommerceapp.data.reposotiry.common
 
 import com.example.ecommerceapp.data.datasource.local.AppPreferencesDataSource
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 
-
-class AppDataStoreRepositoryImpl(
+class AppDataStoreRepositoryImpl @Inject constructor(
     private val appPreferencesDataSource: AppPreferencesDataSource
 ) : AppPreferenceRepository {
 

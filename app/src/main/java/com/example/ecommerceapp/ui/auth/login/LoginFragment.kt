@@ -34,13 +34,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
-    private val loginViewModel: LoginViewModel by viewModels {
-        LoginViewModelFactory(contextValue = requireContext())
-    }
+     val loginViewModel: LoginViewModel by viewModels()
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
     private  val callbackManager :CallbackManager by lazy { CallbackManager.Factory.create() }
     private val loginManager: LoginManager by lazy {LoginManager.getInstance()}
@@ -88,6 +87,8 @@ class LoginFragment : Fragment() {
                         logAuthIssueToCrashlytics(msg, "Login Error")
                     }
 
+
+                    else -> {}
                 }
             }
         }
@@ -133,7 +134,7 @@ class LoginFragment : Fragment() {
             .requestServerAuthCode(BuildConfig.clientServerId).build()
 
         val googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
-        googleSignInClient.signOut()
+      //  googleSignInClient.signOut()
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
     }

@@ -13,15 +13,12 @@ import com.example.ecommerceapp.utils.ProgressDialog
 import com.example.ecommerceapp.utils.showSnakeBarError
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
+@AndroidEntryPoint
 class ForgetPasswordFragment : BottomSheetDialogFragment() {
     private val progressDialog by lazy { ProgressDialog.createProgressDialog(requireActivity()) }
-
-    private val viewModel: ForgetPasswordViewModel by viewModels {
-        ForgetPasswordViewModelFactory()
-    }
-
+    private val viewModel: ForgetPasswordViewModel by viewModels()
     private var _binding: FragmentForgetPasswordBinding? = null
     private val binding get() = _binding!!
 

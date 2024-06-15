@@ -9,6 +9,7 @@ import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
 import com.example.ecommerceapp.domain.toUserDetailsPreferences
 import com.example.ecommerceapp.utils.isValidEmail
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -18,8 +19,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-
-class LoginViewModel(
+import javax.inject.Inject
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val appPreferenceRepository: AppPreferenceRepository,
     private val userPreferenceRepository: UserPreferenceRepository,
     private val authRepository: FirebaseAuthRepository,
