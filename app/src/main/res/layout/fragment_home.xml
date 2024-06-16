@@ -154,6 +154,7 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     android:paddingStart="8dp"
+                    tools:listitem="@layout/sale_ad_shimmer_view"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     />
 

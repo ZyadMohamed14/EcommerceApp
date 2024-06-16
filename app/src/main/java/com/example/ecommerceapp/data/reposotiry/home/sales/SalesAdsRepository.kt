@@ -1,4 +1,4 @@
-package com.example.ecommerceapp.data.reposotiry.home
+package com.example.ecommerceapp.data.reposotiry.home.sales
 
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.sale_ads.SalesAdModel

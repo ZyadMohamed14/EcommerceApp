@@ -1,11 +1,10 @@
-package com.example.ecommerceapp.data.reposotiry.home
+package com.example.ecommerceapp.data.reposotiry.home.sales
 
 import android.util.Log
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.sale_ads.SalesAdModel
 import com.example.ecommerceapp.domain.toUIModel
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject

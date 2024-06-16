@@ -9,10 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerceapp.R
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.databinding.FragmentHomeBinding
+import com.example.ecommerceapp.ui.dashboard.home.adapter.CategoriesAdapter
 import com.example.ecommerceapp.ui.dashboard.home.adapter.SalesAdAdapter
+import com.example.ecommerceapp.ui.dashboard.home.model.CategoryUIModel
 import com.example.ecommerceapp.ui.dashboard.home.model.SalesAdUIModel
 import com.example.ecommerceapp.ui.dashboard.home.viewmodels.HomeViewModel
 import com.example.ecommerceapp.utils.CircleView
@@ -70,6 +73,26 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+        lifecycleScope.launch {
+            viewModel.categoriesState.collect { resources ->
+                when (resources) {
+                    is Resource.Loading -> {
+                        Log.d(TAG, "iniViewModel: categories Loading")
+                    }
+
+                    is Resource.Success -> {
+//                        binding.categoriesShimmerView.root.stopShimmer()
+//                        binding.categoriesShimmerView.root.visibility = View.GONE
+                        Log.d(TAG, "iniViewModel: categories Success = ${resources.data}")
+                        initCategoriesView(resources.data)
+                    }
+
+                    is Resource.Error -> {
+                        Log.d(TAG, "iniViewModel: categories Error")
+                    }
+                }
+            }
+        }
 
     }
 
@@ -110,6 +133,20 @@ class HomeFragment : Fragment() {
 
 
 
+    }
+    private fun initCategoriesView(data: List<CategoryUIModel>?) {
+        if (data.isNullOrEmpty()) {
+            return
+        }
+        val categoriesAdapter = CategoriesAdapter(data)
+        binding.categoriesRecyclerView.apply {
+            adapter = categoriesAdapter
+            setHasFixedSize(true)
+            isNestedScrollingEnabled = false
+            layoutManager = LinearLayoutManager(
+                requireContext(), LinearLayoutManager.HORIZONTAL, false
+            )
+        }
     }
     override fun onResume() {
         super.onResume()

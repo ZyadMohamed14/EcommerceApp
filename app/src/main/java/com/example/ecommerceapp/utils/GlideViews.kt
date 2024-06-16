@@ -7,6 +7,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.ecommerceapp.R
 
@@ -26,6 +27,8 @@ object GlideViews {
                 .into(view)
         }
     }
+  //  @JvmStatic
+
     fun getGlideCircleLoading(view: ImageView): CircularProgressDrawable {
         return CircularProgressDrawable(view.context).apply {
             strokeWidth = 5f

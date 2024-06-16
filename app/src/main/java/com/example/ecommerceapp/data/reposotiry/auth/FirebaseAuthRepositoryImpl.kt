@@ -1,7 +1,10 @@
 package com.example.ecommerceapp.data.reposotiry.auth
 
+import android.util.Log
 import com.example.ecommerceapp.data.model.AuthProvider
 import com.example.ecommerceapp.data.model.Resource
+import com.example.ecommerceapp.data.model.auth.RegisterRequestModel
+import com.example.ecommerceapp.data.model.auth.RegisterResponseModel
 import com.example.ecommerceapp.data.model.user.UserDetailsModel
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.LoginException
@@ -12,14 +15,14 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 
 class FirebaseAuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth ,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val cloudFunctionAPI: CloudFunctionAPI
 ) : FirebaseAuthRepository {
 
     // Example usage for email and password login
@@ -125,6 +128,10 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun registerWithGoogleWithAPI(idToken: String): Flow<Resource<RegisterResponseModel>> {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun registerWithFacebook(token: String): Flow<Resource<UserDetailsModel>> {
         return flow {
             try {
@@ -208,6 +215,32 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override suspend fun registerEmailAndPasswordWithAPI(registerRequestModel: RegisterRequestModel): Flow<Resource<RegisterResponseModel>> {
+        return flow {
+            try {
+                emit(Resource.Loading())
+                val response = cloudFunctionAPI.registerUser(registerRequestModel)
+                if (response.isSuccessful) {
+                    val registerResponse = response.body()
+                    registerResponse?.data?.let {
+                        emit(Resource.Success(it))
+                    } ?: run {
+                        emit(Resource.Error(Exception(registerResponse?.message)))
+                    }
+                } else {
+                    Log.d(
+                        TAG,
+                        "registerEmailAndPasswordWithAPI: Error registering user = ${response.errorBody()}"
+                    )
+                    emit(Resource.Error(Exception(handleErrorResponse(response.errorBody()!!.charStream()))))
+                }
+            } catch (e: Exception) {
+                emit(Resource.Error(e))
+            }
+        }
+    }
+
 
     private fun logAuthIssueToCrashlytics(msg: String, provider: String) {
         CrashlyticsUtils.sendCustomLogToCrashlytics<LoginException>(
