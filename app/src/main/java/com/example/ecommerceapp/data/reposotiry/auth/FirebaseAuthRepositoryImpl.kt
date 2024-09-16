@@ -1,13 +1,8 @@
-package com.example.ecommerceapp.data.reposotiry.auth.firebase
+package com.example.ecommerceapp.data.reposotiry.auth
 
-import android.util.Log
 import com.example.ecommerceapp.data.model.AuthProvider
 import com.example.ecommerceapp.data.model.Resource
-import com.example.ecommerceapp.data.model.auth.RegisterRequestModel
-import com.example.ecommerceapp.data.model.auth.RegisterResponseModel
 import com.example.ecommerceapp.data.model.user.UserDetailsModel
-import com.example.ecommerceapp.data.reposotiry.auth.CloudFunctionAPI
-import com.example.ecommerceapp.data.reposotiry.auth.handleErrorResponse
 import com.example.ecommerceapp.utils.CrashlyticsUtils
 import com.example.ecommerceapp.utils.LoginException
 import com.google.firebase.auth.AuthResult
@@ -17,14 +12,14 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 
 class FirebaseAuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth ,
-    private val firestore: FirebaseFirestore,
-    private val cloudFunctionAPI: CloudFunctionAPI
+    private val firestore: FirebaseFirestore
 ) : FirebaseAuthRepository {
 
     // Example usage for email and password login
@@ -60,13 +55,13 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
                 return@flow
             }
 
-//            if (authResult.user?.isEmailVerified == false) {
-//                authResult.user?.sendEmailVerification()?.await()
-//                val msg = "Email not verified, verification email sent to user"
-//                logAuthIssueToCrashlytics(msg, provider.name)
-//                emit(Resource.Error(Exception(msg)))
-//                return@flow
-//            }
+            if (authResult.user?.isEmailVerified == false) {
+                authResult.user?.sendEmailVerification()?.await()
+                val msg = "Email not verified, verification email sent to user"
+                logAuthIssueToCrashlytics(msg, provider.name)
+                emit(Resource.Error(Exception(msg)))
+                return@flow
+            }
 
             // get user details from firestore
             val userDoc = firestore.collection("users").document(userId).get().await()
@@ -128,10 +123,6 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
                 emit(Resource.Error(e)) // Emit error
             }
         }
-    }
-
-    override suspend fun registerWithGoogleWithAPI(idToken: String): Flow<Resource<RegisterResponseModel>> {
-        TODO("Not yet implemented")
     }
 
     override suspend fun registerWithFacebook(token: String): Flow<Resource<UserDetailsModel>> {
@@ -217,32 +208,6 @@ class FirebaseAuthRepositoryImpl @Inject constructor(
             }
         }
     }
-
-    override suspend fun registerEmailAndPasswordWithAPI(registerRequestModel: RegisterRequestModel): Flow<Resource<RegisterResponseModel>> {
-        return flow {
-            try {
-                emit(Resource.Loading())
-                val response = cloudFunctionAPI.registerUser(registerRequestModel)
-                if (response.isSuccessful) {
-                    val registerResponse = response.body()
-                    registerResponse?.data?.let {
-                        emit(Resource.Success(it))
-                    } ?: run {
-                        emit(Resource.Error(Exception(registerResponse?.message)))
-                    }
-                } else {
-                    Log.d(
-                        TAG,
-                        "registerEmailAndPasswordWithAPI: Error registering user = ${response.errorBody()}"
-                    )
-                    emit(Resource.Error(Exception(handleErrorResponse(response.errorBody()!!.charStream()))))
-                }
-            } catch (e: Exception) {
-                emit(Resource.Error(e))
-            }
-        }
-    }
-
 
     private fun logAuthIssueToCrashlytics(msg: String, provider: String) {
         CrashlyticsUtils.sendCustomLogToCrashlytics<LoginException>(

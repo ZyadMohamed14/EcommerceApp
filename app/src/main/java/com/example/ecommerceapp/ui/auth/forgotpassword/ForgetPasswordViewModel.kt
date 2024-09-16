@@ -1,9 +1,11 @@
 package com.example.ecommerceapp.ui.auth.forgotpassword
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.ecommerceapp.data.model.Resource
-import com.example.ecommerceapp.data.reposotiry.auth.firebase.FirebaseAuthRepository
+import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
+import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepositoryImpl
 import com.example.ecommerceapp.utils.isValidEmail
 import dagger.hilt.android.lifecycle.HiltViewModel
 

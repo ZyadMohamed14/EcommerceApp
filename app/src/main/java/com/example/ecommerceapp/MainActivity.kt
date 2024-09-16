@@ -12,15 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.example.ecommerceapp.databinding.ActivityMainBinding
-import com.example.ecommerceapp.ui.dashboard.account.AccountFragment
 import com.example.ecommerceapp.ui.auth.AuthActivity
 import com.example.ecommerceapp.ui.auth.usermodel.UserViewModel
-import com.example.ecommerceapp.ui.dashboard.cart.CartFragment
-import com.example.ecommerceapp.ui.dashboard.explor.ExploreFragment
-import com.example.ecommerceapp.ui.dashboard.home.adapter.HomeViewPagerAdapter
-import com.example.ecommerceapp.ui.dashboard.home.fragments.HomeFragment
-import com.example.ecommerceapp.ui.dashboard.offers.OffersFragment
 import com.facebook.internal.Utility.logd
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
@@ -31,69 +24,31 @@ import kotlinx.coroutines.runBlocking
 class MainActivity : AppCompatActivity() {
      val userViewModel: UserViewModel by viewModels ()
 
-    private var _bindig: ActivityMainBinding? = null
-    private val binding get() = _bindig!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         initSplashScreen()
         super.onCreate(savedInstanceState)
+        if(userViewModel == null){
+            Log.d("MainActivity", "userViewModel is null")
+        }
 
- val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
+        val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
         if (!isLoggedIn) {
-            Log.d("benz", "is User LoggedIn: $isLoggedIn")
             goToAuthActivity()
             return
         }
 
-
-
-      //  Log.d("benz", "is User LoggedIn: $isLoggedIn")
-        _bindig = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
+        setContentView(R.layout.activity_main)
+        //this line for test wii be deleted in the future
+     //   findViewById<View>(R.id.textView).setOnClickListener { logOut() }
 
         initViewModel()
-        initViews()
-    }
-    private fun initViews() {
-        initViewPager()
-        initBottomNavigationView()
-    }
-    private fun initBottomNavigationView() {
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.homeFragment -> binding.homeViewPager.currentItem = 0
-                R.id.exploreFragment -> binding.homeViewPager.currentItem = 1
-                R.id.cartFragment -> binding.homeViewPager.currentItem = 2
-                R.id.offerFragment -> binding.homeViewPager.currentItem = 3
-                R.id.accountFragment -> binding.homeViewPager.currentItem = 4
-            }
-            true
-        }
     }
 
-
-    private fun initViewPager() {
-        val fragments = listOf(
-            HomeFragment(),
-            ExploreFragment(),
-            CartFragment(),
-            OffersFragment(),
-            AccountFragment()
-        )
-        binding.homeViewPager.offscreenPageLimit = fragments.size
-        binding.homeViewPager.adapter = HomeViewPagerAdapter(this, fragments)
-        binding.homeViewPager.registerOnPageChangeCallback(
-            object : androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback() {
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    binding.bottomNavigationView.menu.getItem(position).isChecked = true
-                }
-            }
-        )
-    }
 
     private fun goToAuthActivity() {
         val intent = Intent(this, AuthActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         startActivity(intent)
     }

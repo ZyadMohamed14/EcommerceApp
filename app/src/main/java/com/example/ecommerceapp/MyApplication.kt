@@ -3,9 +3,6 @@ package com.example.ecommerceapp
 import android.annotation.SuppressLint
 import android.app.Application
 import android.util.Log
-import androidx.databinding.DataBindingComponent
-import androidx.databinding.DataBindingUtil
-import com.example.ecommerceapp.databinding.ItemSalesAdBinding
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork
 import com.google.firebase.FirebaseApp
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -18,7 +15,6 @@ class MyApplication : Application() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
         listenToNetworkConnectivity()
-
     }
 
     @SuppressLint("CheckResult")

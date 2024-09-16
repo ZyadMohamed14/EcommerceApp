@@ -2,7 +2,7 @@
     <string name="app_name">ecommerceapp</string>
 
 
-    <!-- TODO: Auth Feature Strings -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="welcome_to_lafyuu">Welcome to Lafyuu</string>
     <string name="signin_to_continue">Signin to continue</string>
@@ -30,20 +30,5 @@
     <string name="facebook_signup_btn_msg">Sign up with facebook</string>
     <string name="forget_password_msg">Enter your email, to send an email to update your password.</string>
     <string name="send">Send</string>
-    <string name="reset_password_msg">Reset Password</string>
-
-    <!-- TODO: Home Features Strings -->
-    <string name="home">Home</string>
-    <string name="explore">Explore</string>
-    <string name="cart">Cart</string>
-    <string name="offer">Offer</string>
-    <string name="account">Account</string>
-    <string name="search_products">Search Products</string>
-    <string name="category">Category</string>
-    <string name="more_categories">More Categories</string>
-    <string name="select_country_msg">Please seelct your country</string>
-    <string name="flash_sale">Flash Sale</string>
-    <string name="see_more">See more</string>
-    <string name="mega_sale">Mega Sale</string>
 
 </resources>

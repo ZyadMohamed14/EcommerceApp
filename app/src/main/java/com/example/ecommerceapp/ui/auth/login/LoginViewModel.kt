@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ecommerceapp.data.model.Resource
 import com.example.ecommerceapp.data.model.user.UserDetailsModel
-import com.example.ecommerceapp.data.reposotiry.auth.firebase.FirebaseAuthRepository
+import com.example.ecommerceapp.data.reposotiry.auth.FirebaseAuthRepository
 import com.example.ecommerceapp.data.reposotiry.common.AppPreferenceRepository
 import com.example.ecommerceapp.data.reposotiry.user.UserPreferenceRepository
 import com.example.ecommerceapp.domain.toUserDetailsPreferences
@@ -71,7 +71,7 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun savePreferenceData(userDetailsModel: UserDetailsModel) {
         appPreferenceRepository.saveLoginState(true)
-      //  userPreferenceRepository.updateUserDetails(userDetailsModel.toUserDetailsPreferences())
+        userPreferenceRepository.updateUserDetails(userDetailsModel.toUserDetailsPreferences())
     }
 
 }

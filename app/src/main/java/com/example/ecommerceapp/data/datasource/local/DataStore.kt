@@ -18,7 +18,7 @@ import java.io.OutputStream
 
 object DataStoreKeys {
     const val E_COMMERCE_PREFERENCES = "e_commerce_preferences"
-    const val USER_DETAILS_PREFERENCES_PB = "user_details.pb"
+    const val USER_DETAILS_PREFERENCES_PB = "user.pb"
     val IS_USER_LOGGED_IN = booleanPreferencesKey("is_user_logged_in")
 }
 
