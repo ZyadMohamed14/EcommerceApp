@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
 
  val isLoggedIn = runBlocking { userViewModel.isUserLoggedIn().first() }
         if (!isLoggedIn) {
-            Log.d("benz", "is User LoggedIn: $isLoggedIn")
+          //  Log.d("benz", "is User LoggedIn: $isLoggedIn")
             goToAuthActivity()
             return
         }
